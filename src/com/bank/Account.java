@@ -1,11 +1,16 @@
-package com.company;
-
-import org.junit.jupiter.api.function.Executable;
+package com.bank;
 
 public abstract class Account {
-
     private String accountNumber;
-   double accountBalance;
+    double accountBalance;
+
+    public Account(String accountNumber, double accountBalance) {
+        this.accountNumber = accountNumber;
+        this.accountBalance = accountBalance;
+    }
+    public Account(){
+        this("", 0.0);
+    }
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
@@ -25,6 +30,11 @@ public abstract class Account {
 
     public void deposit(double depositAmount) {
     this.accountBalance+=depositAmount;
+    }
+
+    public void transfer(double amount, Account account){
+       withdraw(amount);
+       account.deposit(amount);
     }
 
     public abstract void withdraw(double withdrawalAmount);

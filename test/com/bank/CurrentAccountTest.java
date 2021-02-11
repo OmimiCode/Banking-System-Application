@@ -1,4 +1,4 @@
-package com.company;
+package com.bank;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +10,7 @@ class CurrentAccountTest {
 CurrentAccount currentAccount;
     @BeforeEach
     void setUp() {
-        currentAccount = new CurrentAccount();
+        currentAccount = new CurrentAccount("dres", 1000);
     }
 
     @AfterEach
