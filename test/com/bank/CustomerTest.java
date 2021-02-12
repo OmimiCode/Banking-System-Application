@@ -63,6 +63,12 @@ class CustomerTest {
 //        assertEquals(950, shola.account.getBalance());
         assertThrows(IllegalArgumentException.class, ()-> shola.account.withdraw(1000050));
 
+        Person peter = new Customer();
+//        Customer john = new Person();
+        peter.account = new SavingsAccount();
+
+        System.out.println(peter.account.getAccountNumber());
+
     }
 
 }

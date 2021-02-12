@@ -5,6 +5,10 @@ public class CurrentAccount extends Account {
         super(accountNumber, accountBalance);
     }
 
+    public CurrentAccount() {
+    super();
+    }
+
     @Override
     public void withdraw(double withdrawalAmount) {
          if(accountBalance>=withdrawalAmount) {

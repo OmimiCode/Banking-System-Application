@@ -1,4 +1,6 @@
 package com.bank;
 
-public class Teller {
+public interface Teller {
+    String displayAccountDetails();
+    String DisplayTransactionDetails();
 }

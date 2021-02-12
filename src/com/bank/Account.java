@@ -1,6 +1,8 @@
 package com.bank;
 
-public abstract class Account {
+import java.security.SecureRandom;
+
+public abstract class Account implements Teller {
     private String accountNumber;
     double accountBalance;
 
@@ -8,21 +10,19 @@ public abstract class Account {
         this.accountNumber = accountNumber;
         this.accountBalance = accountBalance;
     }
+
     public Account(){
-        this("", 0.0);
+        generateAccountNumber();
+        this.accountBalance = 0.0;
     }
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
-    public String getAccountNumber() {
-        return accountNumber.toUpperCase();
-    }
+    public String getAccountNumber() { return accountNumber;}
 
-    public void setBalance(double accountBalance) {
-       this.accountBalance = accountBalance;
-    }
+    public void setBalance(double accountBalance) { this.accountBalance = accountBalance;}
 
     public double getBalance() {
         return accountBalance;
@@ -39,4 +39,22 @@ public abstract class Account {
 
     public abstract void withdraw(double withdrawalAmount);
 
+    public void generateAccountNumber(){
+        SecureRandom randomNumber = new SecureRandom();
+        int number = 10000 + randomNumber.nextInt(99999);
+        String bankSignature = "SCB";
+        this.accountNumber = bankSignature + number;
+    }
+
+
+
+    @Override
+    public String displayAccountDetails() {
+        return String.format( "ACCOUNT NUMBER: %s%n ACCOUNT BALANCE: %s%n", getAccountNumber(), getBalance());
+    }
+
+    @Override
+    public String DisplayTransactionDetails() {
+        return null;
+    }
 }

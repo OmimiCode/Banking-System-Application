@@ -9,18 +9,13 @@ public static final double savingsAccountWithdrawalLimit = 1000000;
     public SavingsAccount (){
         super();
     }
-
     @Override
     public void withdraw(double withdrawalAmount) {
-        if(accountBalance>=withdrawalAmount ) {
-            accountBalance -= withdrawalAmount;
-        }else{
+        if(accountBalance<=withdrawalAmount ) {
             throw new IllegalArgumentException("insufficient funds");
         }
-        if( withdrawalAmount<=savingsAccountWithdrawalLimit){
-            accountBalance -= withdrawalAmount;
-        }else{
-            throw new IllegalArgumentException("Your account is a savings account, we are sorry you have a daily withdrawal limit of N1_000_000 and You've exceeded your withdrawal limit for today , please try again");
-        }
+        if( withdrawalAmount>=savingsAccountWithdrawalLimit) {
+            throw new IllegalArgumentException("Your account is a savings account, we are sorry you have a daily withdrawal limit of N1_000_000 and You've exceeded your withdrawal limit for today , please try again"); }
+        accountBalance -= withdrawalAmount;
     }
 }
