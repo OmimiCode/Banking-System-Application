@@ -6,22 +6,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MasterTest {
-    Account account;
+class GeneralTest {
 
     @BeforeEach
-    void setUp() {
-        account = new Account() {
-            @Override
-            public void withdraw(double withdrawalAmount) {
+    void setUP(){
 
-            }
-        };
     }
 
     @AfterEach
     void tearDown() {
-        account = null;
+
     }
 
 
@@ -31,6 +25,11 @@ class MasterTest {
         Account account = new Account() {
             @Override
             public void withdraw(double withdrawalAmount) {
+
+            }
+
+            @Override
+            public void debit(double debitAmount) {
 
             }
         };
@@ -51,29 +50,44 @@ class MasterTest {
             public void withdraw(double withdrawalAmount) {
 
             }
+
+            @Override
+            public void debit(double debitAmount) {
+
+            }
         };
         Account account2 = new Account() {
             @Override
             public void withdraw(double withdrawalAmount) {
 
             }
+
+            @Override
+            public void debit(double debitAmount) {
+
+            }
         };
-//        account1.generateAccountNumber();
+
         String accNumber1 = account1.getAccountNumber();
         System.out.println("ACCOUNT NUMBER 1: " + accNumber1);
         assertEquals(accNumber1, account1.getAccountNumber());
 
-//        account2.generateAccountNumber();
+
         String accNumber2 = account2.getAccountNumber();
         System.out.println("ACCOUNT NUMBER 2: " + accNumber2);
         assertEquals(accNumber2, account2.getAccountNumber());
 
-        System.out.printf("account number 1:%s%n  account number 2:%s%n", accNumber1, accNumber2);
+        System.out.printf("account number 1:%s%n account number 2:%s%n", accNumber1, accNumber2);
         assertNotEquals(accNumber1, accNumber2);
 
         Account autoAccount = new Account() {
             @Override
             public void withdraw(double withdrawalAmount) {
+
+            }
+
+            @Override
+            public void debit(double debitAmount) {
 
             }
         };
@@ -90,6 +104,17 @@ class MasterTest {
 
     @Test
     void testThatWeCanSetAndGetAccountBalance() {
+        Account account = new Account() {
+            @Override
+            public void withdraw(double withdrawalAmount) {
+
+            }
+
+            @Override
+            public void debit(double debitAmount) {
+
+            }
+        };
         account.setBalance(98765432.1);
         assertEquals(98765432.1, account.getBalance());
         account.setBalance(1000);
@@ -98,6 +123,17 @@ class MasterTest {
 
     @Test
     void testThatWeCanDepositMoneyIntoTheAccount() {
+        Account account = new Account() {
+            @Override
+            public void withdraw(double withdrawalAmount) {
+
+            }
+
+            @Override
+            public void debit(double debitAmount) {
+
+            }
+        };
         account.setBalance(180);
         account.deposit(100.0);
         assertEquals(280, account.getBalance());
@@ -105,50 +141,29 @@ class MasterTest {
 
     @Test
     void testAccountCanTransferMoneyFromOneAccountToTheOther() {
-        Account account1 = new SavingsAccount();
+
+        Account account1 = new CurrentAccount();
         Account account2 = new SavingsAccount();
-        Account account3 = new SavingsAccount();
-        Account account4 = new CurrentAccount();
 
-        account1.deposit(100);
-        assertEquals(100, account1.getBalance());
-        account2.deposit(20);
-        assertEquals(20, account2.getBalance());
+        assertEquals(1111, account1.getPin());
+        account1.deposit(2000000);
+        assertEquals(2000000, account1.getBalance());
 
-        account1.transfer(30, account2);
-        assertEquals(50, account2.getBalance());
-        assertEquals(70, account1.getBalance());
-
-//        account3.generateAccountNumber();
-        System.out.println(account3.getAccountNumber());
-        account3.deposit(2000000);
-        assertEquals(2000000, account3.getBalance());
-        assertThrows(IllegalArgumentException.class, () -> account3.transfer(1500000, account1));
-        assertThrows(IllegalArgumentException.class, () -> account3.transfer(2500000, account1));
+        assertEquals(1111, account2.getPin());
+        account2.deposit(1000000);
+        assertEquals(1000000, account2.getBalance());
 
 
-        System.out.println("ACCOUNT NUMBER 4 : " + account4.getAccountNumber());
-        account4.deposit(2000000);
-        assertEquals(2000000, account4.getBalance());
-        assertThrows(IllegalArgumentException.class, () -> account4.transfer(2500000, account1));
+        account1.transfer(500000, account2);
+        assertEquals(1500000, account2.getBalance());
+        assertEquals(1500000, account1.getBalance());
 
-        Account account = new Account() {
-            @Override
-            public void withdraw(double withdrawalAmount) {
-                if (accountBalance >= withdrawalAmount) {
-                    accountBalance -= withdrawalAmount;
-                } else {
-                    throw new IllegalArgumentException("insufficient funds");
-                }
-            }
-        };
 
-   assertThrows(IllegalArgumentException.class, () -> account.transfer(100, account4));
-   account.setBalance(230);
-   assertEquals(230,account.getBalance());
-   account.transfer(100, account4);
-   assertEquals(130, account.getBalance());
-   assertEquals(2000100, account4.getBalance());
+        assertThrows(IllegalArgumentException.class, () -> account2.transfer(1500000, account1));
+
+        assertEquals(1500000, account2.getBalance());
+        assertEquals(1500000, account1.getBalance());
+
     }
 
 
@@ -163,15 +178,13 @@ class MasterTest {
         customer.setGender("male");
         customer.setAddress("17","ekujumi street sari-iganmu","lagos", "nigeria");
         customer.account = new SavingsAccount();
-
-
         System.out.println(customer.toString());
 
 
     }
     @Test
     void ThatWeCanCreateANewCustomerWIthCurrentAccount(){
-        Account samCurrentAccount = new CurrentAccount("SCB1234",0.0);
+        Account samCurrentAccount = new CurrentAccount("SCB1234",0.0,1111);
         Customer samuel = new Customer("","", "","","", 0, "", samCurrentAccount );
         samuel.setFirstName("samuel");
         samuel.setMiddleName("john");
@@ -199,19 +212,18 @@ class MasterTest {
 
     @Test
     void ThatWeCanCreateANewCustomerWIthSavingsAccount(){
-        Account savingsAccount1 = new SavingsAccount("SCB1111", 0.0);
+        Account savingsAccount1 = new SavingsAccount("SCB1111", 0.0, 1111);
         Customer shola = new Customer("","", "","","", 0, "", savingsAccount1);
         shola.account.setAccountNumber("SCB111");
         assertEquals(0, shola.account.getBalance());
         shola.account.deposit(1000);
         assertEquals(1000, shola.account.getBalance());
         shola.account.deposit(1000000);
-//        shola.account.withdraw(1000050);
-//        assertEquals(950, shola.account.getBalance());
+
         assertThrows(IllegalArgumentException.class, ()-> shola.account.withdraw(1000050));
 
         Person peter = new Customer();
-//        Customer john = new Person();
+
         peter.account = new SavingsAccount();
 
         System.out.println(peter.account.getAccountNumber());
@@ -234,7 +246,7 @@ class MasterTest {
 
     @Test
     void ThatWeCanCreateANewCustomerWIthCurrentAccountWithArgumentConstructor(){
-        Account samCurrentAccount = new CurrentAccount("SCB1234",0.0);
+        Account samCurrentAccount = new CurrentAccount("SCB1234",0.0,1111);
         Customer samuel = new Customer("","", "","","", 0, "", samCurrentAccount );
         samuel.setFirstName("samuel");
         samuel.setMiddleName("john");
@@ -262,7 +274,7 @@ class MasterTest {
 
     @Test
     void ThatWeCanCreateANewCustomerWIthSavingsAccountWithArgumentConstructor(){
-        Account savingsAccount1 = new SavingsAccount("SCB1111", 0.0);
+        Account savingsAccount1 = new SavingsAccount("SCB1111", 0.0, 1111);
         Customer shola = new Customer("","", "","","", 0, "", savingsAccount1);
         shola.account.setAccountNumber("SCB111");
         assertEquals(0, shola.account.getBalance());
@@ -282,7 +294,7 @@ class MasterTest {
     }
 
 
-   Person person = new Person("paul", "john","bill", "male","12/7/1996", 25,"172, washington Avenue, Washington DC, USA" );
+    Person person = new Person("paul", "john","bill", "male","12/7/1996", 25,"172, washington Avenue, Washington DC, USA" );
 
     @Test
     void testUserCanSetAndGetFirstName_middleName_LastName(){
@@ -324,6 +336,17 @@ class MasterTest {
 //        person.setAddress("172", "washington Avenue", "Washington DC", "USA");
         assertEquals("172, WASHINGTON AVENUE, WASHINGTON DC, USA", person.getAddress());
     }
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
